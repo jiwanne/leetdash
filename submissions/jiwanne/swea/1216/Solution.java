@@ -1,70 +1,104 @@
-import java.util.Scanner;
+import java.util.*;
 
+public class Solution {
 
-class Solution
-{
-	public static void main(String args[]) throws Exception
-	{
+    public static void main(String[] args) {
 
-		Scanner sc = new Scanner(System.in);
-		int T = 10;
+        Scanner sc = new Scanner(System.in);
 
+        for (int test_case = 1; test_case <= 10; test_case++) {
 
-		for(int test_case = 1; test_case <= T; test_case++)
-		{
-            char [][] arr = new char[100][100];
-            int answer = 0;
+            int T = sc.nextInt();
 
-            int num = sc.nextInt();
-            for(int i = 0; i < 100; i++) {
-                String str = sc.next();
+            char[][] arr = new char[100][100];
 
-                for(int j = 0; j < 100; j++) {
-                    arr[i][j] = str.charAt(j);
+            for (int i = 0; i < 100; i++) {
+                String s = sc.next();
+
+                for (int j = 0; j < 100; j++) {
+                    arr[i][j] = s.charAt(j);
                 }
             }
 
-           for(int i = 0; i < 100; i++) {
-                for(int j = 0; j < 100; j++) {
-                    for(int k = 1; k <= 100 - j; k++) {
+            int ans = 1;
 
-                        String str = "";
-                        
-                        for(int l = 0; l < k; l++) {
-                            str += arr[i][j + l];
+            // 가로
+            for (int r = 0; r < 100; r++) {
+                for (int c = 0; c < 100; c++) {
+
+                    // 짝수
+                    int left = c;
+                    int right = c + 1;
+
+                    while (left >= 0 && right < 100) {
+                        if (arr[r][left] != arr[r][right]) {
+                            break;
                         }
 
-                        StringBuilder sb = new StringBuilder(str);
-                        if(str.equals(sb.reverse().toString())) {
-                            answer = Math.max(answer, k);
-                        }
+                        left--;
+                        right++;
                     }
-                }
-            }
 
-            for(int i = 0; i < 100; i++) {
-                for(int j = 0; j < 100; j++) {
+                    int len = right - left - 1;
+                    ans = Math.max(ans, len);
 
-                    for(int k = 1; k <= 100 - j; k++) {
+                    // 홀수
+                    left = c - 1;
+                    right = c + 1;
 
-                        String str = "";
-
-                        for(int l = 0; l < k; l++) {
-                            str += arr[j+l][i];
+                    while (left >= 0 && right < 100) {
+                        if (arr[r][left] != arr[r][right]) {
+                            break;
                         }
 
-                        StringBuilder sb = new StringBuilder(str);
-                        if(str.equals(sb.reverse().toString())) {
-                            answer = Math.max(answer, k);
-                        }
+                        left--;
+                        right++;
                     }
+
+                    len = right - left - 1;
+                    ans = Math.max(ans, len);
                 }
             }
 
+            // 세로
+            for (int c = 0; c < 100; c++) {
+                for (int r = 0; r < 100; r++) {
 
+                    // 짝수
+                    int left = r;
+                    int right = r + 1;
 
+                    while (left >= 0 && right < 100) {
+                        if (arr[left][c] != arr[right][c]) {
+                            break;
+                        }
 
-            System.out.println("#" + num + " " + answer);
-		}
-	}
+                        left--;
+                        right++;
+                    }
+
+                    int len = right - left - 1;
+                    ans = Math.max(ans, len);
+
+                    // 홀수
+                    left = r - 1;
+                    right = r + 1;
+
+                    while (left >= 0 && right < 100) {
+                        if (arr[left][c] != arr[right][c]) {
+                            break;
+                        }
+
+                        left--;
+                        right++;
+                    }
+
+                    len = right - left - 1;
+                    ans = Math.max(ans, len);
+                }
+            }
+
+            System.out.println("#" + T + " " + ans);
+        }
+    }
 }
